@@ -1,6 +1,6 @@
 using Domain.Branches;
 using Microsoft.EntityFrameworkCore;
-using Micrososft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations;
 

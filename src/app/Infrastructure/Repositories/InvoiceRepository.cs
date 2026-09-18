@@ -9,7 +9,7 @@ public class InvoiceRepository: Repository<Invoice>, IInvoiceRepository
         _context = context;
     }
 
-    public Task<List<Invoice>> GetByIdAsync(Guid id)
+    public Task<List<Invoice?>> GetByIdAsync(Guid id)
     {
         return _context.Invoices
             /*.FirstOrDefaultAsync(
@@ -21,7 +21,7 @@ public class InvoiceRepository: Repository<Invoice>, IInvoiceRepository
             .ToListAsync();
     }
 
-    public Task<List<Invoice>> GetAllAsync()
+    public Task<List<Invoice?>> GetAllAsync()
     {
         return _context.Invoices
             .ToListAsync();

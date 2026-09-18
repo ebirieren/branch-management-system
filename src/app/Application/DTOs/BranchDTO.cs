@@ -1,5 +1,6 @@
 namespace Application.DTOs;
 
+namespace Domain.Products;
 public record BranchDTO
 {
     public int Id { get; init; }

@@ -21,6 +21,16 @@ builder.Services.AppDBContext<AppDBContext>(options =>
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+
+    app.UseSwaggerUI(options =>
+    {
+       options.SwaggerEndpoint("/openapi/v1.json", "Branch Management API v1"); 
+    });
+}
+
 app.MapControllers();
 
 // Configure the HTTP request pipeline.

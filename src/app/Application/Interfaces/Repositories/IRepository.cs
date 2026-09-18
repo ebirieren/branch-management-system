@@ -1,6 +1,6 @@
 namespace Application.Interfaces;
 
-public interface IRepository<TEntity> where TEntity: class
+public interface IRepository<TEntity, TId> where TEntity: class
 {
     Task<List<TEntity?>> GetByIdAsync(TId id);
     

@@ -1,5 +1,6 @@
 namespace Application.DTOs;
 
+namespace Domain.Branches;
 public record Invoice
 {
     public Guid RowGuid { get; init; }

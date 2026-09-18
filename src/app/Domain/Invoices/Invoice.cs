@@ -1,5 +1,7 @@
 namespace Domain.Invoices;
 
+using Domain.Enums;
+using Domain.Branches;
 public class Invoice
 {
     public Guid RowGuid { get; set; } = Guid.NewGuid();
