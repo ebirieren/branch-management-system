@@ -2,9 +2,9 @@ namespace Application.Interfaces;
 
 public interface IRepository<TEntity, TId> where TEntity: class
 {
-    Task<List<TEntity?>> GetByIdAsync(TId id);
+    Task<TEntity?> GetByIdAsync(TId id);
     
-    Task<List<TEntity?>> GetAllAsync();
+    Task<List<TEntity>> GetAllAsync();
 
     Task AddAsync(TEntity entity);
 

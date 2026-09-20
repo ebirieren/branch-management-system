@@ -2,5 +2,5 @@ namespace Application.Requests;
 
 public record CreateBranchRequest
 {
-    public string BranchName { get; init; } 
+    public required string BranchName { get; init; }
 }

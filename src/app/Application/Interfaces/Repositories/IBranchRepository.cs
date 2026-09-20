@@ -1,8 +1,6 @@
-using Application.Interfaces;
-
+using Domain.Branches;
 namespace Application.Interfaces;
 
-public interface IBranchRepository: IRepository<Branch>
+public interface IBranchRepository: IRepository<Branch, int>
 {
-    
 }

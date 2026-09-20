@@ -1,10 +1,12 @@
 using Application.DTOs;
 using Application.Interfaces;
+using Application.Interfaces.Services;
 using Application.Requests;
+using Domain.Products;
 
 namespace Application.Services;
 
-public class ProductService
+public class ProductService : IProductService
 {
 
     private readonly IProductRepository _productRepository;
@@ -22,80 +24,72 @@ public class ProductService
             return null;
         }
 
-        return new ProductDTO(
-            product.Id,
-            product.ProductName,
-            product.ProductPrice,
-            product.PreviousPrice,
-            product.ProductCount,
-            product.TaxRate,
-            product.ProductPriceWithTax,
-            product.BranchId,
-            product.CreatedAt,
-            product.UpdatedAt
-        );
-    }
-     public async Task<IReadOnlyList<ProductDTO?>> GetAllAsync()
-    {
-        List<Product?> products = await _productRepository.GetAllAsync();
-
-        if (products is null)
+        return new ProductDTO
         {
-            return null;
-        }
+            Id = product.Id,
+            ProductName = product.ProductName,
+            ProductPrice = product.ProductPrice,
+            PreviousPrice = product.PreviousPrice,
+            ProductCount = product.ProductCount,
+            TaxRate = product.TaxRate,
+            ProductPriceWithTax = product.ProductPriceWithTax,
+            BranchId = product.BranchId,
+            CreatedAt = product.CreatedAt,
+            UpdatedAt = product.UpdatedAt
+        };
+    }
+
+    public async Task<IReadOnlyList<ProductDTO>> GetAllAsync()
+    {
+        List<Product> products = await _productRepository.GetAllAsync();
 
         return products
-            .Select(product => new ProductDTO(
-                product.Id,
-                product.ProductName,
-                product.ProductPrice,
-                product.PreviousPrice,
-                product.ProductCount,
-                product.TaxRate,
-                product.ProductPriceWithTax,
-                product.BranchId,
-                product.CreatedAt,
-                product.UpdatedAt
-            ))
-            .ToListAsync();
+            .Select(product => new ProductDTO
+            {
+                Id = product.Id,
+                ProductName = product.ProductName,
+                ProductPrice = product.ProductPrice,
+                PreviousPrice = product.PreviousPrice,
+                ProductCount = product.ProductCount,
+                TaxRate = product.TaxRate,
+                ProductPriceWithTax = product.ProductPriceWithTax,
+                BranchId = product.BranchId,
+                CreatedAt = product.CreatedAt,
+                UpdatedAt = product.UpdatedAt
+            })
+            .ToList();
     }
 
     public async Task<ProductDTO> CreateAsync(CreateProductRequest request)
     {
-        Product product = new Product(
-            RowGuid = Guid.NewGuid,
-            Id = null,
+        Product product = new Product
+        {
             ProductName = request.ProductName,
             ProductPrice = request.ProductPrice,
-            PreviousPrice = null,
             ProductCount = request.ProductCount,
-            TaxRate = request.TaxRate,
-            ProductPriceWithTax = null,
-            BranchId = null,
-            Branches = null,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        );
+            TaxRate = request.TaxRate
+        };
 
-        await _productRepository.CreateAsync(product);
+        await _productRepository.AddAsync(product);
 
-        return new ProductDTO(
-            product.Id,
-            product.ProductName,
-            product.ProductPrice,
-            product.PreviousPrice,
-            product.ProductCount,
-            product.TaxRate,
-            product.ProductPriceWithTax,
-            product.BranchId,
-            product.CreateAt,
-            product.UpdatedAt
-        );
+        return new ProductDTO
+        {
+            Id = product.Id,
+            ProductName = product.ProductName,
+            ProductPrice = product.ProductPrice,
+            PreviousPrice = product.PreviousPrice,
+            ProductCount = product.ProductCount,
+            TaxRate = product.TaxRate,
+            ProductPriceWithTax = product.ProductPriceWithTax,
+            BranchId = product.BranchId,
+            CreatedAt = product.CreatedAt,
+            UpdatedAt = product.UpdatedAt
+        };
     }
 
-    public async Task<ProductDTO> UpdateAsync(int id, UpdateProductRequest request)
+    public async Task<ProductDTO?> UpdateAsync(int id, UpdateProductRequest request)
     {
-        Product product = await _productRepository.GetByIdAsync(id);
+        Product? product = await _productRepository.GetByIdAsync(id);
 
         if (product is null)
         {
@@ -105,33 +99,34 @@ public class ProductService
         product.ProductPrice = request.ProductPrice;
         product.ProductCount = request.ProductCount;
         product.TaxRate = request.TaxRate;
-        product.UpdatedAt = Datetime.UtcNow;
+        product.UpdatedAt = DateTime.UtcNow;
 
-        await _productRepository.Update(product);
+        _productRepository.Update(product);
 
-        return new ProductDTO(
-            product.Id,
-            product.ProductName,
-            product.ProductPrice,
-            product.PreviousPrice,
-            product.ProductCount,
-            product.TaxRate,
-            product.ProductPriceWithTax,
-            product.BranchId,
-            product.CreateAt,
-            product.UpdatedAt
-        );
+        return new ProductDTO
+        {
+            Id = product.Id,
+            ProductName = product.ProductName,
+            ProductPrice = product.ProductPrice,
+            PreviousPrice = product.PreviousPrice,
+            ProductCount = product.ProductCount,
+            TaxRate = product.TaxRate,
+            ProductPriceWithTax = product.ProductPriceWithTax,
+            BranchId = product.BranchId,
+            CreatedAt = product.CreatedAt,
+            UpdatedAt = product.UpdatedAt
+        };
     }
     public async Task<bool> DeleteAsync(int id)
     {
-        Product product = await _productRepository.GetByIdAsync(id);
+        Product? product = await _productRepository.GetByIdAsync(id);
 
         if(product is null)
         {
             return false;
         }
 
-        await _productRepository.Remove(product);
+        _productRepository.Remove(product);
 
         return true;
     }

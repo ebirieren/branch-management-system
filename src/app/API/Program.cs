@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Persistence;
-
+using Application.Interfaces;
+using Application.Interfaces.Services;
+using Application.Services;
+using Infrastructure;
+using Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +17,15 @@ var connectionString =
     builder.Configuration.GetConnectionString("PostgreSQL") 
     ?? throw new InvalidOperationException("Connection stirng 'PostgreSQL' was not found.");
 
-builder.Services.AppDBContext<AppDBContext>(options => 
+builder.Services.AddDbContext<AppDBContext>(options =>
 {
     options.UseNpgsql(connectionString);
 });
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IBranchRepository, BranchRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
@@ -32,12 +40,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
 app.UseHttpsRedirection();
 

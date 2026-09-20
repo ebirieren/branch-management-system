@@ -1,6 +1,9 @@
-using Domain.Branches;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+using Domain.Products;
+using Domain.Branches;
 
 namespace Infrastructure.Persistence.Configurations;
 
@@ -20,7 +23,7 @@ public sealed class BranchConfiguration: IEntityTypeConfiguration<Branch>
                     .IsUnique();
 
            entity.Property(branch => branch.BranchName)
-                    .HasMaxLenght(100)
+                    .HasMaxLength(100)
                     .IsRequired()
                     .HasColumnName("branchName");
 
@@ -30,14 +33,18 @@ public sealed class BranchConfiguration: IEntityTypeConfiguration<Branch>
             entity.Property(branch => branch.ProductId)
                     .HasColumnName("productId");
 
-            entity.Property(branch => branch.Products)
-                    .HasColumnName("product");
+            // Original mapping preserved: Products is a navigation collection,
+            // so EF configures it through HasMany instead of Property.
+            // entity.Property(branch => branch.Products)
+            //       .HasColumnName("product");
 
             entity.Property(branch => branch.InvoiceId)
                     .HasColumnName("invoiceId");
 
-            entity.Property(branch => branch.Invoices)
-                    .HasColumnName("invoice");
+            // Original mapping preserved: Invoices is a navigation collection,
+            // so EF configures it through HasMany instead of Property.
+            // entity.Property(branch => branch.Invoices)
+            //       .HasColumnName("invoice");
 
             entity.Property(branch => branch.CreatedAt)
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -47,11 +54,14 @@ public sealed class BranchConfiguration: IEntityTypeConfiguration<Branch>
                     .HasColumnName("updatedAt");
 
             entity.HasMany(branch => branch.Products)
-                    .WithMany(product => product.Branches)
-                    .HasForeignKey(product => product.BranchId);
+                    .WithMany(product => product.Branches);
+
+            // The original HasForeignKey(product => product.BranchId) cannot be
+            // attached directly to a many-to-many relationship in EF Core.
 
             entity.HasMany(branch => branch.Invoices)
                     .WithOne(invoice => invoice.BranchInformations)
-                    .HasForeignKey(invoice => invoice.BranchId);
+                    .HasForeignKey(invoice => invoice.BranchId)
+                    .HasPrincipalKey(branch => branch.RowGuid);
     }
 }

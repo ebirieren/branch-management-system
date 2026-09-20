@@ -1,8 +1,7 @@
-using Application.Interfaces;
+using Domain.Products;
 
 namespace Application.Interfaces;
 
-public interface IProductRepository : IRepository<Product>
+public interface IProductRepository : IRepository<Product, int>
 {
-    
 }

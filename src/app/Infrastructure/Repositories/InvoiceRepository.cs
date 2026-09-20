@@ -1,48 +1,47 @@
 namespace Infrastructure.Repositories;
 
-public class InvoiceRepository: Repository<Invoice>, IInvoiceRepository
+using Microsoft.EntityFrameworkCore;
+using Domain.Invoices;
+using Domain.Enums;
+using Application.Interfaces;
+
+public class InvoiceRepository : IInvoiceRepository
 {
     private readonly AppDBContext _context;
 
-    public InvoiceRepository(AppDBContext context) : base(context)
+    public InvoiceRepository(AppDBContext context)
     {
         _context = context;
     }
 
-    public Task<List<Invoice?>> GetByIdAsync(Guid id)
+    public Task<Invoice?> GetByIdAsync(Guid id)
     {
         return _context.Invoices
-            /*.FirstOrDefaultAsync(
-                invoice => invoice.RowGuid == id, 
-                cancellationToken
-            );*/
-            .Where(invoices => invoice.RowGuid == id)
-            //.FirstOrDefaultAsync(cancellationToken);
-            .ToListAsync();
+            .FirstOrDefaultAsync(invoice => invoice.RowGuid == id);
     }
 
-    public Task<List<Invoice?>> GetAllAsync()
+    public Task<List<Invoice>> GetAllAsync()
     {
         return _context.Invoices
             .ToListAsync();
     }
 
-    public Task AddAsync(Invoice invoice)
+    public async Task AddAsync(Invoice invoice)
     {
-        return _context.Invoices
-            .AddAsync(invoice);
+        await _context.Invoices.AddAsync(invoice);
+        await _context.SaveChangesAsync();
     }
 
     public void Update(Invoice invoice)
     {
-        return _context.Invoices
-            .Update(invoice);
+        _context.Invoices.Update(invoice);
+        _context.SaveChanges();
     }
 
     public void Remove(Invoice invoice)
     {
-        return _context.Invoices
-            .Remove(invoice);
+        _context.Invoices.Remove(invoice);
+        _context.SaveChanges();
     }
 
     public Task<List<Invoice>> GetByBranchIdAsync(Guid branchId)
@@ -52,7 +51,7 @@ public class InvoiceRepository: Repository<Invoice>, IInvoiceRepository
             .ToListAsync();
     }
 
-    public Task<List<Invoice>> GetByInvoiceYearAsync(Guid branchId, Datetime invoiceYear)
+    public Task<List<Invoice>> GetByInvoiceYearAsync(Guid branchId, DateTime invoiceYear)
     {
         return _context.Invoices
             .Where(invoice =>   invoice.BranchId == branchId &&
@@ -60,7 +59,11 @@ public class InvoiceRepository: Repository<Invoice>, IInvoiceRepository
             .ToListAsync();
     }
 
-    public Task<Invoice> GetByInvoiceYearAndTermAsync(Guid branchId, Term term, Datetime invoiceYear, CancellationToken cancellationToken = default)
+    public Task<Invoice?> GetByInvoiceYearAndTermAsync(
+        Guid branchId,
+        Term term,
+        DateTime invoiceYear,
+        CancellationToken cancellationToken = default)
     {
         return _context.Invoices
             .Where(invoice =>   invoice.BranchId == branchId &&

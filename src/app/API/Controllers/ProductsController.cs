@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Application.DTOs;
+using Application.Interfaces.Services;
+using Application.Requests;
 
 namespace API.Controllers;
 
@@ -6,15 +9,15 @@ namespace API.Controllers;
 [Route("api/products")]
 public class ProductsController : ControllerBase
 {
-    private readonly ProductService _productService;
+    private readonly IProductService _productService;
 
-    public ProductsController(ProductService productService)
+    public ProductsController(IProductService productService)
     {
         _productService = productService;
     }
 
-    [HttpGet("{id:id}")]
-    public async Task<ActionResult<CustomerDTO>> GetById(int id)
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<ProductDTO>> GetById(int id)
     {
         ProductDTO? product = await _productService.GetByIdAsync(id);
 
@@ -27,9 +30,9 @@ public class ProductsController : ControllerBase
 
 
     [HttpGet]
-    public async Task<ActionResult<List<CustomerDTO>>> GetAll()
+    public async Task<ActionResult<IReadOnlyList<ProductDTO>>> GetAll()
     {
-        List<ProductDTO?> products = await _productService.GetAllAsync();
+        IReadOnlyList<ProductDTO> products = await _productService.GetAllAsync();
 
         return Ok(products);
     }

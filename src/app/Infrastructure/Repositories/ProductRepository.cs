@@ -1,42 +1,45 @@
 namespace Infrastructure.Repositories;
 
-public class ProductRepository: Repository<Product>, IRepository
+using Microsoft.EntityFrameworkCore;
+using Domain.Products;
+using Application.Interfaces;
+
+public class ProductRepository : IProductRepository
 {
     private readonly AppDBContext _context;
 
-    public ProductRepository(AppDBContext context) : base(context)
+    public ProductRepository(AppDBContext context)
     {
         _context = context;
     }
 
-    public Task<List<Product?>> GetByIdAsync(int id)
+    public Task<Product?> GetByIdAsync(int id)
     {
         return _context.Products
-            .Where(products => products.Id == id)
-            .ToListAsync();
+            .FirstOrDefaultAsync(product => product.Id == id);
     }
     
-    public Task<List<Product?>> GetAllAsync()
+    public Task<List<Product>> GetAllAsync()
     {
         return _context.Products.ToListAsync();
     }
 
-    public Task AddAsync(Product product)
+    public async Task AddAsync(Product product)
     {
-        return _context.Products
-            .AddAsync(product);
+        await _context.Products.AddAsync(product);
+        await _context.SaveChangesAsync();
     }
 
     public void Update(Product product)
     {
-        return _context.Products
-            .Update(product);
+        _context.Products.Update(product);
+        _context.SaveChanges();
     }
 
     public void Remove(Product product)
     {
-        return _context.Products
-            .Remove(product);
+        _context.Products.Remove(product);
+        _context.SaveChanges();
     }
 
     
