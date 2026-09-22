@@ -45,4 +45,17 @@ public class ProductsController : ControllerBase
         return Ok(product);
         
     }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult<bool>> Remove(int id)
+    {
+        bool result = await _productService.DeleteAsync(id);
+
+        if (result == false)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
 }

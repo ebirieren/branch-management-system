@@ -30,21 +30,8 @@ public sealed class BranchConfiguration: IEntityTypeConfiguration<Branch>
             entity.HasIndex(branch => branch.BranchName)
                     .IsUnique();
 
-            entity.Property(branch => branch.ProductId)
-                    .HasColumnName("productId");
-
-            // Original mapping preserved: Products is a navigation collection,
-            // so EF configures it through HasMany instead of Property.
-            // entity.Property(branch => branch.Products)
-            //       .HasColumnName("product");
-
             entity.Property(branch => branch.InvoiceId)
                     .HasColumnName("invoiceId");
-
-            // Original mapping preserved: Invoices is a navigation collection,
-            // so EF configures it through HasMany instead of Property.
-            // entity.Property(branch => branch.Invoices)
-            //       .HasColumnName("invoice");
 
             entity.Property(branch => branch.CreatedAt)
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -55,9 +42,6 @@ public sealed class BranchConfiguration: IEntityTypeConfiguration<Branch>
 
             entity.HasMany(branch => branch.Products)
                     .WithMany(product => product.Branches);
-
-            // The original HasForeignKey(product => product.BranchId) cannot be
-            // attached directly to a many-to-many relationship in EF Core.
 
             entity.HasMany(branch => branch.Invoices)
                     .WithOne(invoice => invoice.BranchInformations)

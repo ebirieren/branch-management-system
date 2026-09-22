@@ -12,7 +12,6 @@ public class Product
     public int ProductCount { get; set; }
     public int? TaxRate { get; set; }
     public decimal? ProductPriceWithTax { get; set; }
-    public Guid BranchId { get; private set;}
     public ICollection<Branch> Branches { get; set; } = new List<Branch>();
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }

@@ -45,16 +45,7 @@ public sealed class ProductConfiguration: IEntityTypeConfiguration<Product>
         entity.Property(product => product.ProductPriceWithTax)
                 .HasColumnName("productPriceWithTax")
                 .HasPrecision(10,2);
-
-        entity.Property(product => product.BranchId)
-                .HasColumnName("branchId");
-
-        // Original mapping preserved. Product has a Branches collection rather
-        // than a scalar Branch property, and the relationship is configured in
-        // BranchConfiguration.
-        // entity.Property(product => product.Branch)
-        //       .HasColumnName("branch");
-
+                
         entity.Property(product => product.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnName("createdAt");

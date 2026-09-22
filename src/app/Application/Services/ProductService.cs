@@ -10,9 +10,12 @@ public class ProductService : IProductService
 {
 
     private readonly IProductRepository _productRepository;
-    public ProductService(IProductRepository productRepository)
+    private readonly ICalculationService _calculationService;
+
+    public ProductService(IProductRepository productRepository, ICalculationService calculationService)
     {
         _productRepository = productRepository;
+        _calculationService = calculationService;
     }
 
     public async Task<ProductDTO?> GetByIdAsync(int id)
@@ -33,13 +36,12 @@ public class ProductService : IProductService
             ProductCount = product.ProductCount,
             TaxRate = product.TaxRate,
             ProductPriceWithTax = product.ProductPriceWithTax,
-            BranchId = product.BranchId,
             CreatedAt = product.CreatedAt,
             UpdatedAt = product.UpdatedAt
         };
     }
 
-    public async Task<IReadOnlyList<ProductDTO>> GetAllAsync()
+    public async Task<IReadOnlyList<ProductDTO?>> GetAllAsync()
     {
         List<Product> products = await _productRepository.GetAllAsync();
 
@@ -53,7 +55,6 @@ public class ProductService : IProductService
                 ProductCount = product.ProductCount,
                 TaxRate = product.TaxRate,
                 ProductPriceWithTax = product.ProductPriceWithTax,
-                BranchId = product.BranchId,
                 CreatedAt = product.CreatedAt,
                 UpdatedAt = product.UpdatedAt
             })
@@ -62,12 +63,15 @@ public class ProductService : IProductService
 
     public async Task<ProductDTO> CreateAsync(CreateProductRequest request)
     {
+        var priceAfterTax = _calculationService.calculatePriceAfterTax(request.ProductPrice, request.TaxRate ?? 0);
+
         Product product = new Product
         {
             ProductName = request.ProductName,
             ProductPrice = request.ProductPrice,
             ProductCount = request.ProductCount,
-            TaxRate = request.TaxRate
+            TaxRate = request.TaxRate,
+            ProductPriceWithTax = priceAfterTax,
         };
 
         await _productRepository.AddAsync(product);
@@ -81,7 +85,6 @@ public class ProductService : IProductService
             ProductCount = product.ProductCount,
             TaxRate = product.TaxRate,
             ProductPriceWithTax = product.ProductPriceWithTax,
-            BranchId = product.BranchId,
             CreatedAt = product.CreatedAt,
             UpdatedAt = product.UpdatedAt
         };
@@ -112,7 +115,6 @@ public class ProductService : IProductService
             ProductCount = product.ProductCount,
             TaxRate = product.TaxRate,
             ProductPriceWithTax = product.ProductPriceWithTax,
-            BranchId = product.BranchId,
             CreatedAt = product.CreatedAt,
             UpdatedAt = product.UpdatedAt
         };

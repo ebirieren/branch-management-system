@@ -21,11 +21,6 @@ public sealed class InvoiceConfiguration: IEntityTypeConfiguration<Invoice>
         entity.Property(invoice => invoice.BranchId)
                 .HasColumnName("branchId");
 
-        // Original mapping preserved: BranchInformations is a navigation,
-        // so its relationship is configured in BranchConfiguration.
-        // entity.Property(invoice => invoice.BranchInformations)
-        //       .HasColumnName("branchInformations");
-
         entity.Property(invoice => invoice.InvoiceTerm)
                 .HasColumnName("term");
         
