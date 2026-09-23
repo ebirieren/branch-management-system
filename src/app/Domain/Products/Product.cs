@@ -10,6 +10,7 @@ public class Product
     public decimal ProductPrice { get; set; }
     public decimal? PreviousPrice { get; set; }
     public int ProductCount { get; set; }
+    public string SupplierName { get; set; } = string.Empty;
     public int? TaxRate { get; set; }
     public decimal? ProductPriceWithTax { get; set; }
     public ICollection<Branch> Branches { get; set; } = new List<Branch>();

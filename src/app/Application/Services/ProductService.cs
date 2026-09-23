@@ -34,6 +34,7 @@ public class ProductService : IProductService
             ProductPrice = product.ProductPrice,
             PreviousPrice = product.PreviousPrice,
             ProductCount = product.ProductCount,
+            SupplierName = product.SupplierName,
             TaxRate = product.TaxRate,
             ProductPriceWithTax = product.ProductPriceWithTax,
             CreatedAt = product.CreatedAt,

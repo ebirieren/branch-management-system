@@ -39,6 +39,9 @@ public sealed class ProductConfiguration: IEntityTypeConfiguration<Product>
                 .HasColumnName("productCount")
                 .HasDefaultValue(0);
 
+        entity.Property(product => product.SupplierName)
+                .HasColumnName("supplierName");
+
         entity.Property(product => product.TaxRate)
                 .HasColumnName("taxRate");
 

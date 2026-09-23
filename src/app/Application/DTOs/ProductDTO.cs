@@ -7,6 +7,7 @@ public record ProductDTO
     public decimal ProductPrice { get; init; }
     public decimal? PreviousPrice { get; init; }
     public int ProductCount { get; init; }
+    public string SupplierName { get; init; } = string.Empty;
     public int? TaxRate { get; init; }
     public decimal? ProductPriceWithTax { get; init; }
     public DateTime CreatedAt { get; init; }

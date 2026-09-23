@@ -36,7 +36,16 @@ public class BranchService : IBranchService
         {
             Id = branch.Id,
             BranchName = branch.BranchName,
-            Products = branch.Products,
+            //Products = branch.Products,
+            Products = branch.Products
+                .Select(product => new BranchProductDTO
+                {
+                    Id = product.Id,
+                    ProductName = product.ProductName,
+                    ProductPriceWithTax = product.ProductPriceWithTax ?? 0m,
+                    ProductCount = product.ProductCount
+                })
+                .ToList(),
             InvoiceId = branch.InvoiceId,
             UpdatedAt = branch.UpdatedAt,
             CreatedAt = branch.CreatedAt
@@ -51,7 +60,15 @@ public class BranchService : IBranchService
         {
            Id = branch.Id,
            BranchName = branch.BranchName,
-           Products = branch.Products,
+           Products = branch.Products
+                .Select(product => new BranchProductDTO
+                {
+                    Id = product.Id,
+                    ProductName = product.ProductName,
+                    ProductPriceWithTax = product.ProductPriceWithTax ?? 0m,
+                    ProductCount = product.ProductCount
+                })
+                .ToList(),
            InvoiceId = branch.InvoiceId,
            UpdatedAt = branch.UpdatedAt,
            CreatedAt = branch.CreatedAt 
@@ -72,7 +89,15 @@ public class BranchService : IBranchService
         {
             Id = branch.Id,
             BranchName = branch.BranchName,
-            Products = branch.Products,
+            Products = branch.Products
+                .Select(product => new BranchProductDTO
+                {
+                    Id = product.Id,
+                    ProductName = product.ProductName,
+                    ProductPriceWithTax = product.ProductPriceWithTax ?? 0m,
+                    ProductCount = product.ProductCount
+                })
+                .ToList(),
             InvoiceId = branch.InvoiceId,
             UpdatedAt = branch.UpdatedAt,
             CreatedAt = branch.CreatedAt
@@ -97,7 +122,15 @@ public class BranchService : IBranchService
         {
           Id = branch.Id,
           BranchName = branch.BranchName,
-          Products = branch.Products,
+          Products = branch.Products
+                .Select(product => new BranchProductDTO
+                {
+                    Id = product.Id,
+                    ProductName = product.ProductName,
+                    ProductPriceWithTax = product.ProductPriceWithTax ?? 0m,
+                    ProductCount = product.ProductCount
+                })
+                .ToList(),
           InvoiceId = branch.InvoiceId,
           UpdatedAt = branch.UpdatedAt,
           CreatedAt = branch.CreatedAt  
@@ -127,16 +160,25 @@ public class BranchService : IBranchService
             return null;
         }
 
-        foreach (int productId in request.ProductId)
+        foreach (ProductInfoRequest item in request.ProductInfo)
         {
-            Product? product = await _productRepository.GetByIdAsync(productId);
+            Product? product = await _productRepository.GetByIdAsync(item.ProductId);
 
             if (product is null)
             {
                 continue;
             }
 
+            if (product.ProductCount <= item.RequiredCount)
+            {
+                continue;
+            }
+
+            int previousProductCount = product.ProductCount - item.RequiredCount;
+            product.ProductCount = item.RequiredCount;
             branch.Products.Add(product);
+            product.ProductCount = previousProductCount;
+            _productRepository.Update(product);
         }
 
         branch.UpdatedAt = DateTime.UtcNow;
@@ -147,7 +189,15 @@ public class BranchService : IBranchService
         {
             Id = branch.Id,
             BranchName = branch.BranchName,
-            Products = branch.Products,
+            Products = branch.Products
+                .Select(product => new BranchProductDTO
+                {
+                    Id = product.Id,
+                    ProductName = product.ProductName,
+                    ProductPriceWithTax = product.ProductPriceWithTax ?? 0m,
+                    ProductCount = product.ProductCount
+                })
+                .ToList(),
             InvoiceId = branch.InvoiceId,
             UpdatedAt = branch.UpdatedAt,
             CreatedAt = branch.CreatedAt
