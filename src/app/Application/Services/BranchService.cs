@@ -36,7 +36,6 @@ public class BranchService : IBranchService
         {
             Id = branch.Id,
             BranchName = branch.BranchName,
-            //Products = branch.Products,
             Products = branch.Products
                 .Select(product => new BranchProductDTO
                 {
@@ -104,9 +103,9 @@ public class BranchService : IBranchService
         };
     }
 
-    public async Task<BranchDTO?> UpdateAsync(int id, UpdateBranchRequest request)
+    public async Task<BranchDTO?> UpdateAsync(UpdateBranchRequest request)
     {
-        Branch? branch = await _branchRepository.GetByIdAsync(id);
+        Branch? branch = await _branchRepository.GetByIdAsync(request.BranchId);
 
         if (branch is null)
         {

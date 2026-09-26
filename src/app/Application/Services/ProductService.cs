@@ -54,6 +54,7 @@ public class ProductService : IProductService
                 ProductPrice = product.ProductPrice,
                 PreviousPrice = product.PreviousPrice,
                 ProductCount = product.ProductCount,
+                SupplierName = product.SupplierName,
                 TaxRate = product.TaxRate,
                 ProductPriceWithTax = product.ProductPriceWithTax,
                 CreatedAt = product.CreatedAt,
@@ -71,6 +72,7 @@ public class ProductService : IProductService
             ProductName = request.ProductName,
             ProductPrice = request.ProductPrice,
             ProductCount = request.ProductCount,
+            SupplierName = request.SupplierName,
             TaxRate = request.TaxRate,
             ProductPriceWithTax = priceAfterTax,
         };
@@ -84,6 +86,7 @@ public class ProductService : IProductService
             ProductPrice = product.ProductPrice,
             PreviousPrice = product.PreviousPrice,
             ProductCount = product.ProductCount,
+            SupplierName = request.SupplierName,
             TaxRate = product.TaxRate,
             ProductPriceWithTax = product.ProductPriceWithTax,
             CreatedAt = product.CreatedAt,
@@ -91,16 +94,22 @@ public class ProductService : IProductService
         };
     }
 
-    public async Task<ProductDTO?> UpdateAsync(int id, UpdateProductRequest request)
+    public async Task<ProductDTO?> UpdateAsync(UpdateProductRequest request)
     {
-        Product? product = await _productRepository.GetByIdAsync(id);
+        Product? product = await _productRepository.GetByIdAsync(request.ProductId);
 
         if (product is null)
         {
             return null;
+        } 
+        if (request.ProductPrice != null )
+        {
+            product.PreviousPrice = product.ProductPrice;
+            product.ProductPrice = request.ProductPrice;
+            var priceAfterTax = _calculationService.calculatePriceAfterTax(request.ProductPrice, request.TaxRate ?? 0);
+            product.ProductPriceWithTax = priceAfterTax;
         }
 
-        product.ProductPrice = request.ProductPrice;
         product.ProductCount = request.ProductCount;
         product.TaxRate = request.TaxRate;
         product.UpdatedAt = DateTime.UtcNow;
@@ -114,6 +123,7 @@ public class ProductService : IProductService
             ProductPrice = product.ProductPrice,
             PreviousPrice = product.PreviousPrice,
             ProductCount = product.ProductCount,
+            SupplierName = product.SupplierName,
             TaxRate = product.TaxRate,
             ProductPriceWithTax = product.ProductPriceWithTax,
             CreatedAt = product.CreatedAt,

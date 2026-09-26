@@ -37,7 +37,7 @@ public class ProductsController : ControllerBase
         return Ok(products);
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<ActionResult<ProductDTO>> Create(CreateProductRequest request)
     {
         ProductDTO product = await _productService.CreateAsync(request);
@@ -46,7 +46,15 @@ public class ProductsController : ControllerBase
         
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpPost("update")]
+    public async Task<ActionResult<ProductDTO>> Update(UpdateProductRequest request)
+    {
+        ProductDTO product = await _productService.UpdateAsync(request);
+
+        return Ok(product);
+    }
+
+    [HttpDelete("delete/{id:int}")]
     public async Task<ActionResult<bool>> Remove(int id)
     {
         bool result = await _productService.DeleteAsync(id);

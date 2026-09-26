@@ -45,7 +45,6 @@ public sealed class BranchConfiguration: IEntityTypeConfiguration<Branch>
 
             entity.HasMany(branch => branch.Invoices)
                     .WithOne(invoice => invoice.BranchInformations)
-                    .HasForeignKey(invoice => invoice.BranchId)
-                    .HasPrincipalKey(branch => branch.RowGuid);
+                    .HasForeignKey(invoice => invoice.BranchId);
     }
 }

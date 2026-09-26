@@ -41,7 +41,7 @@ public class BranchesController : ControllerBase
         return Ok(branches);
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<ActionResult<BranchDTO>> Create(CreateBranchRequest request)
     {
         BranchDTO branch = await _branchService.CreateAsync(request);
@@ -49,12 +49,20 @@ public class BranchesController : ControllerBase
         return Ok(branch);
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpPost("update")]
+    public async Task<ActionResult<BranchDTO>> Update(UpdateBranchRequest request)
+    {
+        BranchDTO branch = await _branchService.UpdateAsync(request);
+
+        return Ok(branch);
+    }
+
+    [HttpDelete("delete/{id:int}")]
     public async Task<ActionResult<bool>> Remove(int id)
     {
         bool result = await _branchService.DeleteAsync(id);
 
-        if (result =! true)
+        if (result != true)
         {
             return NotFound();
         }
@@ -62,7 +70,7 @@ public class BranchesController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("/AddProduct")]
+    [HttpPost("addProduct")]
     public async Task<ActionResult<BranchDTO?>> AddProduct(AddProductToBranchRequest request)
     {
         BranchDTO? branch = await _branchService.AddProductAsync(request);

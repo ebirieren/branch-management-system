@@ -5,13 +5,13 @@ namespace Application.Interfaces;
 
 public interface IInvoiceRepository: IRepository<Invoice, Guid>
 {
-    Task<List<Invoice>> GetByBranchIdAsync(Guid branchId);
+    Task<List<Invoice>> GetByBranchIdAsync(int branchId);
 
-    Task<List<Invoice>> GetByInvoiceYearAsync(Guid branchId, DateTime invoiceYear);
+    Task<List<Invoice>> GetByInvoiceYearAsync(int branchId, int invoiceYear);
 
     Task<Invoice?> GetByInvoiceYearAndTermAsync(
-        Guid branchId,
+        int branchId,
         Term term,
-        DateTime invoiceYear,
+        int invoiceYear,
         CancellationToken cancellationToken = default);
 }

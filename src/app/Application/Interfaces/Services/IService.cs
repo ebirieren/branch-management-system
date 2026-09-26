@@ -8,7 +8,7 @@ public interface IService<TDTO, TId, TCreateRequest, TUpdateRequest> where TDTO:
 
     Task<TDTO> CreateAsync(TCreateRequest request);
 
-    Task<TDTO?> UpdateAsync(TId id, TUpdateRequest request);
+    Task<TDTO?> UpdateAsync(TUpdateRequest request);
 
     Task<bool> DeleteAsync(TId id);
     

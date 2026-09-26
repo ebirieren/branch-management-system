@@ -3,17 +3,20 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.Persistence.Migrations
+namespace Infrastructure.Infrastructure.Persistences
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260925122642_InvoiceNameAdded")]
+    partial class InvoiceNameAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,8 +90,8 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<int>("BranchId")
-                        .HasColumnType("integer")
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("uuid")
                         .HasColumnName("branchId");
 
                     b.Property<DateTime>("CreatedAt")
@@ -105,8 +108,8 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("term");
 
-                    b.Property<int>("InvoiceYear")
-                        .HasColumnType("integer")
+                    b.Property<DateTime>("InvoiceYear")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("year");
 
                     b.HasKey("RowGuid");
@@ -207,6 +210,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasOne("Domain.Branches.Branch", "BranchInformations")
                         .WithMany("Invoices")
                         .HasForeignKey("BranchId")
+                        .HasPrincipalKey("RowGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

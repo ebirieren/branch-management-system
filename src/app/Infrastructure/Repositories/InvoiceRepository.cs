@@ -17,12 +17,16 @@ public class InvoiceRepository : IInvoiceRepository
     public Task<Invoice?> GetByIdAsync(Guid id)
     {
         return _context.Invoices
+            .Include(invoice => invoice.BranchInformations)
+            .ThenInclude(branch => branch.Products)
             .FirstOrDefaultAsync(invoice => invoice.RowGuid == id);
     }
 
     public Task<List<Invoice>> GetAllAsync()
     {
         return _context.Invoices
+            .Include(invoice => invoice.BranchInformations)
+            .ThenInclude(branch => branch.Products)
             .ToListAsync();
     }
 
@@ -44,14 +48,14 @@ public class InvoiceRepository : IInvoiceRepository
         _context.SaveChanges();
     }
 
-    public Task<List<Invoice>> GetByBranchIdAsync(Guid branchId)
+    public Task<List<Invoice>> GetByBranchIdAsync(int branchId)
     {
         return _context.Invoices
             .Where(invoice => invoice.BranchId == branchId)
             .ToListAsync();
     }
 
-    public Task<List<Invoice>> GetByInvoiceYearAsync(Guid branchId, DateTime invoiceYear)
+    public Task<List<Invoice>> GetByInvoiceYearAsync(int branchId, int invoiceYear)
     {
         return _context.Invoices
             .Where(invoice =>   invoice.BranchId == branchId &&
@@ -60,9 +64,9 @@ public class InvoiceRepository : IInvoiceRepository
     }
 
     public Task<Invoice?> GetByInvoiceYearAndTermAsync(
-        Guid branchId,
+        int branchId,
         Term term,
-        DateTime invoiceYear,
+        int invoiceYear,
         CancellationToken cancellationToken = default)
     {
         return _context.Invoices
