@@ -19,6 +19,8 @@ public class AppDBContext: DbContext
 
     public DbSet<Product> Products => Set<Product>();
 
+    public DbSet<BranchStock> BranchStock => Set<BranchStock>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

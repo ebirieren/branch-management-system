@@ -10,10 +10,12 @@ namespace API.Controllers;
 public class BranchesController : ControllerBase
 {
     private readonly IBranchService _branchService;
+    private readonly IBranchStockService _branchStockService;
 
-    public BranchesController(IBranchService branchService)
+    public BranchesController(IBranchService branchService, IBranchStockService branchStockService)
     {
         _branchService = branchService;
+        _branchStockService = branchStockService;
     }
 
     [HttpGet("{id:int}")]
@@ -73,7 +75,7 @@ public class BranchesController : ControllerBase
     [HttpPost("addProduct")]
     public async Task<ActionResult<BranchDTO?>> AddProduct(AddProductToBranchRequest request)
     {
-        BranchDTO? branch = await _branchService.AddProductAsync(request);
+        BranchDTO? branch = await _branchStockService.AddProductAsync(request);
 
         if (branch is null)
         {

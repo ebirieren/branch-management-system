@@ -16,14 +16,16 @@ public class BranchRepository : IBranchRepository
     public Task<Branch?> GetByIdAsync(int id)
     {
         return _context.Branches
-            .Include(branch => branch.Products)
+            .Include(branch => branch.BranchStocks)
+            .ThenInclude(branchStock => branchStock.Product)
             .FirstOrDefaultAsync(branch => branch.Id == id);
     }
 
     public Task<List<Branch>> GetAllAsync()
     {
         return _context.Branches
-            .Include(branch => branch.Products)
+            .Include(branch => branch.BranchStocks)
+            .ThenInclude(branchStock => branchStock.Product)
             .ToListAsync();
     }
 

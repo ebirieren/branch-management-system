@@ -8,4 +8,5 @@ public interface IProductService : IService<ProductDTO, int, CreateProductReques
 {
     //Assign a branch
     //remove from branch
+    
 }

@@ -42,5 +42,11 @@ public class ProductRepository : IProductRepository
         _context.SaveChanges();
     }
 
+    public Task<List<Product>> GetByIdsAsync(IEnumerable<int> productIds)
+    {
+        return _context.Products
+            .Where(product => productIds.Contains(product.Id))
+            .ToListAsync();
+    }
     
 }

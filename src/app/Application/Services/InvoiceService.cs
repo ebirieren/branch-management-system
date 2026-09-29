@@ -40,13 +40,13 @@ public class InvoiceService : IInvoiceService
                     Id = branch.Id,
                     BranchName = branch.BranchName,
 
-                    Products = branch.Products
-                        .Select(product => new BranchProductDTO
+                    Products = branch.BranchStocks
+                        .Select(stock => new BranchProductDTO
                         {
-                            Id = product.Id,
-                            ProductName = product.ProductName,
-                            ProductPriceWithTax = product.ProductPriceWithTax ?? 0m,
-                            ProductCount = product.ProductCount
+                            Id = stock.ProductId,
+                            ProductName = stock.Product.ProductName,
+                            ProductPriceWithTax = stock.Product.ProductPriceWithTax ?? 0m,
+                            ProductCount = stock.ProductCount
                         })
                         .ToList(),
 
@@ -78,13 +78,13 @@ public class InvoiceService : IInvoiceService
                         Id = branch.Id,
                         BranchName = branch.BranchName,
 
-                        Products = branch.Products
-                            .Select(product => new BranchProductDTO
+                        Products = branch.BranchStocks
+                            .Select(stock => new BranchProductDTO
                             {
-                                Id = product.Id,
-                                ProductName = product.ProductName,
-                                ProductPriceWithTax = product.ProductPriceWithTax ?? 0m,
-                                ProductCount = product.ProductCount
+                                Id = stock.ProductId,
+                                ProductName = stock.Product.ProductName,
+                                ProductPriceWithTax = stock.Product.ProductPriceWithTax ?? 0m,
+                                ProductCount = stock.ProductCount
                             })
                             .ToList(),
 
@@ -125,13 +125,13 @@ public class InvoiceService : IInvoiceService
                     Id = branch.Id,
                     BranchName = branch.BranchName,
 
-                    Products = branch.Products
-                        .Select(product => new BranchProductDTO
+                    Products = branch.BranchStocks
+                        .Select(stock => new BranchProductDTO
                         {
-                            Id = product.Id,
-                            ProductName = product.ProductName,
-                            ProductPriceWithTax = product.ProductPriceWithTax ?? 0m,
-                            ProductCount = product.ProductCount
+                            Id = stock.ProductId,
+                            ProductName = stock.Product.ProductName,
+                            ProductPriceWithTax = stock.Product.ProductPriceWithTax ?? 0m,
+                            ProductCount = stock.ProductCount
                         })
                         .ToList(),
 
@@ -170,13 +170,13 @@ public class InvoiceService : IInvoiceService
                     Id = branch.Id,
                     BranchName = branch.BranchName,
 
-                    Products = branch.Products
-                        .Select(product => new BranchProductDTO
+                    Products = branch.BranchStocks
+                        .Select(stock => new BranchProductDTO
                         {
-                            Id = product.Id,
-                            ProductName = product.ProductName,
-                            ProductPriceWithTax = product.ProductPriceWithTax ?? 0m,
-                            ProductCount = product.ProductCount
+                            Id = stock.ProductId,
+                            ProductName = stock.Product.ProductName,
+                            ProductPriceWithTax = stock.Product.ProductPriceWithTax ?? 0m,
+                            ProductCount = stock.ProductCount
                         })
                         .ToList(),
 

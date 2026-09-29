@@ -109,7 +109,7 @@ public class ProductService : IProductService
             var priceAfterTax = _calculationService.calculatePriceAfterTax(request.ProductPrice, request.TaxRate ?? 0);
             product.ProductPriceWithTax = priceAfterTax;
         }
-
+        product.SupplierName = request.SupplierName;
         product.ProductCount = request.ProductCount;
         product.TaxRate = request.TaxRate;
         product.UpdatedAt = DateTime.UtcNow;

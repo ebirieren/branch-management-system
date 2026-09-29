@@ -13,7 +13,7 @@ public class Product
     public string SupplierName { get; set; } = string.Empty;
     public int? TaxRate { get; set; }
     public decimal? ProductPriceWithTax { get; set; }
-    public ICollection<Branch> Branches { get; set; } = new List<Branch>();
+    public ICollection<BranchStock> BranchStocks { get; set; } = new List<BranchStock>();
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
 }

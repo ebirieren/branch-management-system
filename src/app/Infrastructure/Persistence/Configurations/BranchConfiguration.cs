@@ -40,9 +40,6 @@ public sealed class BranchConfiguration: IEntityTypeConfiguration<Branch>
             entity.Property(branch => branch.UpdatedAt)
                     .HasColumnName("updatedAt");
 
-            entity.HasMany(branch => branch.Products)
-                    .WithMany(product => product.Branches);
-
             entity.HasMany(branch => branch.Invoices)
                     .WithOne(invoice => invoice.BranchInformations)
                     .HasForeignKey(invoice => invoice.BranchId);

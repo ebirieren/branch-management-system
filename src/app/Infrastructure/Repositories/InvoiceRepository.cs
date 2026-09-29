@@ -18,7 +18,8 @@ public class InvoiceRepository : IInvoiceRepository
     {
         return _context.Invoices
             .Include(invoice => invoice.BranchInformations)
-            .ThenInclude(branch => branch.Products)
+            .ThenInclude(branch => branch.BranchStocks)
+            .ThenInclude(stock => stock.Product)
             .FirstOrDefaultAsync(invoice => invoice.RowGuid == id);
     }
 
@@ -26,7 +27,8 @@ public class InvoiceRepository : IInvoiceRepository
     {
         return _context.Invoices
             .Include(invoice => invoice.BranchInformations)
-            .ThenInclude(branch => branch.Products)
+            .ThenInclude(branch => branch.BranchStocks)
+            .ThenInclude(stock => stock.Product)
             .ToListAsync();
     }
 

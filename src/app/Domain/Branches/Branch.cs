@@ -8,7 +8,7 @@ public class Branch
     public Guid RowGuid { get; set; } = Guid.NewGuid();
     public int Id { get; set; }
     public string BranchName { get; set; } = string.Empty;
-    public ICollection<Product> Products { get; set; } = new List<Product>();
+    public ICollection<BranchStock> BranchStocks { get; set; } = new List<BranchStock>();
     public Guid InvoiceId { get; private set; }
     public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
     public DateTime? UpdatedAt { get; set; }
