@@ -1,5 +1,6 @@
 using Domain.Branches;
 using Domain.Products;
+using Domain.Transactions;
 
 namespace Domain.Branches;
 public class BranchStock

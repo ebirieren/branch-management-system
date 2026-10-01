@@ -30,12 +30,12 @@ public class InvoiceService : IInvoiceService
             return null;
         }
 
-        Branch branch = invoice.BranchInformations;
+        Branch branch = invoice.Branch;
 
         return new InvoiceDTO
         {
             RowGuid = invoice.RowGuid,
-            BranchInformations = new BranchDTO
+            Branch = new BranchDTO
                 {
                     Id = branch.Id,
                     BranchName = branch.BranchName,
@@ -67,13 +67,13 @@ public class InvoiceService : IInvoiceService
 
         return invoices.Select(invoice =>
         {
-            Branch branch = invoice.BranchInformations;
+            Branch branch = invoice.Branch;
 
             return new InvoiceDTO{
 
                 RowGuid = invoice.RowGuid,
 
-                BranchInformations = new BranchDTO
+                Branch = new BranchDTO
                     {
                         Id = branch.Id,
                         BranchName = branch.BranchName,
@@ -110,7 +110,7 @@ public class InvoiceService : IInvoiceService
             RowGuid = Guid.NewGuid(),
             InvoiceName = request.InvoiceName,
             BranchId = request.BranchId,  
-            BranchInformations = branch,
+            Branch = branch,
             InvoiceTerm = request.InvoiceTerm,
             InvoiceYear = request.InvoiceYear
         };
@@ -120,7 +120,7 @@ public class InvoiceService : IInvoiceService
         return new InvoiceDTO
         {
             RowGuid = invoice.RowGuid,
-            BranchInformations = new BranchDTO
+            Branch = new BranchDTO
                 {
                     Id = branch.Id,
                     BranchName = branch.BranchName,
@@ -160,12 +160,12 @@ public class InvoiceService : IInvoiceService
 
         _invoiceRepository.Update(invoice);
         
-        Branch branch = invoice.BranchInformations;
+        Branch branch = invoice.Branch;
 
         return new InvoiceDTO
         {
             RowGuid = invoice.RowGuid,
-            BranchInformations = new BranchDTO
+            Branch = new BranchDTO
                 {
                     Id = branch.Id,
                     BranchName = branch.BranchName,

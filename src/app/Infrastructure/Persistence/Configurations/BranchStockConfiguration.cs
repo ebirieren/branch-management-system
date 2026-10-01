@@ -11,7 +11,11 @@ public sealed class BranchStockConfiguration: IEntityTypeConfiguration<BranchSto
     {
         entity.ToTable("BranchStock");
 
-        entity.HasKey(branchStock => new { branchStock.BranchId, branchStock.ProductId});
+        entity.HasKey(branchStock => new 
+        { 
+                branchStock.BranchId, 
+                branchStock.ProductId
+        });
 
         entity.Property(branchStock => branchStock.BranchId)
                 .IsRequired()
@@ -24,14 +28,10 @@ public sealed class BranchStockConfiguration: IEntityTypeConfiguration<BranchSto
                 .IsRequired()
                 .HasColumnName("productCount");
 
-        entity.HasOne(branchStock => branchStock.Branch)
-                .WithMany(branch => branch.BranchStocks)
-                .HasForeignKey(branchStock => branchStock.BranchId);
 
         entity.HasOne(branchStock => branchStock.Product)
                 .WithMany(product => product.BranchStocks)
                 .HasForeignKey(branchStock => branchStock.ProductId);
-
 
     }
 }

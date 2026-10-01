@@ -10,12 +10,10 @@ public class ProductService : IProductService
 {
 
     private readonly IProductRepository _productRepository;
-    private readonly ICalculationService _calculationService;
 
-    public ProductService(IProductRepository productRepository, ICalculationService calculationService)
+    public ProductService(IProductRepository productRepository)
     {
         _productRepository = productRepository;
-        _calculationService = calculationService;
     }
 
     public async Task<ProductDTO?> GetByIdAsync(int id)
@@ -37,6 +35,7 @@ public class ProductService : IProductService
             SupplierName = product.SupplierName,
             TaxRate = product.TaxRate,
             ProductPriceWithTax = product.ProductPriceWithTax,
+            InitialTotalCost = product.InitialTotalCost,
             CreatedAt = product.CreatedAt,
             UpdatedAt = product.UpdatedAt
         };
@@ -57,6 +56,7 @@ public class ProductService : IProductService
                 SupplierName = product.SupplierName,
                 TaxRate = product.TaxRate,
                 ProductPriceWithTax = product.ProductPriceWithTax,
+                InitialTotalCost = product.InitialTotalCost,
                 CreatedAt = product.CreatedAt,
                 UpdatedAt = product.UpdatedAt
             })
@@ -65,7 +65,6 @@ public class ProductService : IProductService
 
     public async Task<ProductDTO> CreateAsync(CreateProductRequest request)
     {
-        var priceAfterTax = _calculationService.calculatePriceAfterTax(request.ProductPrice, request.TaxRate ?? 0);
 
         Product product = new Product
         {
@@ -73,8 +72,7 @@ public class ProductService : IProductService
             ProductPrice = request.ProductPrice,
             ProductCount = request.ProductCount,
             SupplierName = request.SupplierName,
-            TaxRate = request.TaxRate,
-            ProductPriceWithTax = priceAfterTax,
+            TaxRate = request.TaxRate
         };
 
         await _productRepository.AddAsync(product);
@@ -89,6 +87,7 @@ public class ProductService : IProductService
             SupplierName = request.SupplierName,
             TaxRate = product.TaxRate,
             ProductPriceWithTax = product.ProductPriceWithTax,
+            InitialTotalCost = product.InitialTotalCost,
             CreatedAt = product.CreatedAt,
             UpdatedAt = product.UpdatedAt
         };
@@ -106,9 +105,8 @@ public class ProductService : IProductService
         {
             product.PreviousPrice = product.ProductPrice;
             product.ProductPrice = request.ProductPrice;
-            var priceAfterTax = _calculationService.calculatePriceAfterTax(request.ProductPrice, request.TaxRate ?? 0);
-            product.ProductPriceWithTax = priceAfterTax;
         }
+        product.ProductName = request.ProductName;
         product.SupplierName = request.SupplierName;
         product.ProductCount = request.ProductCount;
         product.TaxRate = request.TaxRate;
@@ -126,6 +124,7 @@ public class ProductService : IProductService
             SupplierName = product.SupplierName,
             TaxRate = product.TaxRate,
             ProductPriceWithTax = product.ProductPriceWithTax,
+            InitialTotalCost = product.InitialTotalCost,
             CreatedAt = product.CreatedAt,
             UpdatedAt = product.UpdatedAt
         };

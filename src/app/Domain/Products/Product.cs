@@ -4,7 +4,6 @@ namespace Domain.Products;
 
 public class Product 
 {
-    public Guid RowGuid { get; set; } = Guid.NewGuid();
     public int Id { get; set; }
     public string ProductName { get; set; } = string.Empty;
     public decimal ProductPrice { get; set; }
@@ -12,8 +11,8 @@ public class Product
     public int ProductCount { get; set; }
     public string SupplierName { get; set; } = string.Empty;
     public int? TaxRate { get; set; }
-    public decimal? ProductPriceWithTax { get; set; }
-    public ICollection<BranchStock> BranchStocks { get; set; } = new List<BranchStock>();
+    public decimal? ProductPriceWithTax => ProductPrice * TaxRate / 100  + ProductPrice;
+    public decimal? InitialTotalCost => ProductCount * ProductPriceWithTax;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
 }

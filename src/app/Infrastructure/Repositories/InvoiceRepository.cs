@@ -17,7 +17,7 @@ public class InvoiceRepository : IInvoiceRepository
     public Task<Invoice?> GetByIdAsync(Guid id)
     {
         return _context.Invoices
-            .Include(invoice => invoice.BranchInformations)
+            .Include(invoice => invoice.Branch)
             .ThenInclude(branch => branch.BranchStocks)
             .ThenInclude(stock => stock.Product)
             .FirstOrDefaultAsync(invoice => invoice.RowGuid == id);
@@ -26,7 +26,7 @@ public class InvoiceRepository : IInvoiceRepository
     public Task<List<Invoice>> GetAllAsync()
     {
         return _context.Invoices
-            .Include(invoice => invoice.BranchInformations)
+            .Include(invoice => invoice.Branch)
             .ThenInclude(branch => branch.BranchStocks)
             .ThenInclude(stock => stock.Product)
             .ToListAsync();

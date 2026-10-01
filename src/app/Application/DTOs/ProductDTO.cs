@@ -10,6 +10,7 @@ public record ProductDTO
     public string SupplierName { get; init; } = string.Empty;
     public int? TaxRate { get; init; }
     public decimal? ProductPriceWithTax { get; init; }
+    public decimal? InitialTotalCost { get; init; }
     public DateTime CreatedAt { get; init; }
     public DateTime? UpdatedAt { get; init; }
 }
