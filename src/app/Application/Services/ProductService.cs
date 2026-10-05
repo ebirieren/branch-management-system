@@ -10,10 +10,12 @@ public class ProductService : IProductService
 {
 
     private readonly IProductRepository _productRepository;
+    private readonly ICalculationService _calculationService;
 
-    public ProductService(IProductRepository productRepository)
+    public ProductService(IProductRepository productRepository, ICalculationService calculationService)
     {
         _productRepository = productRepository;
+        _calculationService = calculationService;
     }
 
     public async Task<ProductDTO?> GetByIdAsync(int id)
@@ -65,6 +67,7 @@ public class ProductService : IProductService
 
     public async Task<ProductDTO> CreateAsync(CreateProductRequest request)
     {
+        var priceAfterTax = _calculationService.calculatePriceAfterTax(request.ProductPrice, request.TaxRate ?? 0);
 
         Product product = new Product
         {
@@ -72,6 +75,7 @@ public class ProductService : IProductService
             ProductPrice = request.ProductPrice,
             ProductCount = request.ProductCount,
             SupplierName = request.SupplierName,
+            ProductPriceWithTax = priceAfterTax, 
             TaxRate = request.TaxRate
         };
 
@@ -106,6 +110,8 @@ public class ProductService : IProductService
             product.PreviousPrice = product.ProductPrice;
             product.ProductPrice = request.ProductPrice;
         }
+        var priceAfterTax = _calculationService.calculatePriceAfterTax(request.ProductPrice, request.TaxRate ?? 0);
+        product.ProductPriceWithTax = priceAfterTax;
         product.ProductName = request.ProductName;
         product.SupplierName = request.SupplierName;
         product.ProductCount = request.ProductCount;

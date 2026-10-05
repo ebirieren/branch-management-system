@@ -11,7 +11,7 @@ public class Product
     public int ProductCount { get; set; }
     public string SupplierName { get; set; } = string.Empty;
     public int? TaxRate { get; set; }
-    public decimal? ProductPriceWithTax => ProductPrice * TaxRate / 100  + ProductPrice;
+    public decimal? ProductPriceWithTax { get; set; }
     public decimal? InitialTotalCost => ProductCount * ProductPriceWithTax;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }

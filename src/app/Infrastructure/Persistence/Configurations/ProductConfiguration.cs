@@ -48,9 +48,6 @@ public sealed class ProductConfiguration: IEntityTypeConfiguration<Product>
         entity.Property(product => product.ProductPriceWithTax)
                 .HasColumnName("productPriceWithTax")
                 .HasPrecision(10,2);
-
-        entity.Property(product => product.TotalCost)
-                .HasColumnName("initialTotalCost");
                 
         entity.Property(product => product.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -58,6 +55,8 @@ public sealed class ProductConfiguration: IEntityTypeConfiguration<Product>
 
         entity.Property(product => product.UpdatedAt)
                 .HasColumnName("updatedAt");
+
+        entity.Ignore(product => product.InitialTotalCost);
 
     }
 }

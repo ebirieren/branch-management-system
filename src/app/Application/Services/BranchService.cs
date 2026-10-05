@@ -12,16 +12,19 @@ public class BranchService : IBranchService
     private readonly IBranchRepository _branchRepository;
     private readonly IProductRepository _productRepository;
     private readonly IInvoiceRepository _invoiceRepository;
+    private readonly IStockTransactionRepository _stockTransactionRepository;
 
 
     public BranchService(
         IBranchRepository branchRepository, 
         IProductRepository productRepository,
-        IInvoiceRepository invoiceRepository)
+        IInvoiceRepository invoiceRepository,
+        IStockTransactionRepository stockTransactionRepository)
     {
         _branchRepository = branchRepository;
         _productRepository = productRepository;
         _invoiceRepository = invoiceRepository;
+        _stockTransactionRepository = stockTransactionRepository;
     }
 
     public async Task<BranchDTO?> GetByIdAsync(int id)
@@ -54,6 +57,29 @@ public class BranchService : IBranchService
                     ProductCount = stock.ProductCount
                 })
                 .ToList(),
+
+            StockTransactions = branch.StockTransactions
+                .Select(transaction => new StockTransactionDTO
+                {
+                    Id = transaction.Id,
+                    BranchId = transaction.BranchId,
+                    Product = new ProductTransactionDTO
+                    {
+                        ProductId = transaction.ProductId,
+                        ProductName = transaction.ProductNameAtTransaction,
+                        SupplierName = transaction.SupplierNameAtTransaction,
+                        ProductPrice = transaction.ProductPriceAtTransaction,
+                        TaxRate = transaction.TaxRateAtTransaction
+                    },
+                    Quantity = transaction.Quantity,
+                    TransactionDate = transaction.TransactionDate,
+                    UnitPriceWithTax = transaction.UnitPriceWithTax,
+                    TotalExpense = transaction.TotalExpense,
+                    InvoiceId = transaction.InvoiceId,
+                    IsInvoiced = transaction.IsInvoiced
+                })
+                .ToList(),
+
             InvoiceId = branch.InvoiceId,
             UpdatedAt = branch.UpdatedAt,
             CreatedAt = branch.CreatedAt
@@ -77,6 +103,29 @@ public class BranchService : IBranchService
                     ProductCount = stock.ProductCount
                 })
                 .ToList(),
+
+            StockTransactions = branch.StockTransactions
+                .Select(transaction => new StockTransactionDTO
+                {
+                    Id = transaction.Id,
+                    BranchId = transaction.BranchId,
+                    Product = new ProductTransactionDTO
+                    {
+                        ProductId = transaction.ProductId,
+                        ProductName = transaction.ProductNameAtTransaction,
+                        SupplierName = transaction.SupplierNameAtTransaction,
+                        ProductPrice = transaction.ProductPriceAtTransaction,
+                        TaxRate = transaction.TaxRateAtTransaction
+                    },
+                    Quantity = transaction.Quantity,
+                    TransactionDate = transaction.TransactionDate,
+                    UnitPriceWithTax = transaction.UnitPriceWithTax,
+                    TotalExpense = transaction.TotalExpense,
+                    InvoiceId = transaction.InvoiceId,
+                    IsInvoiced = transaction.IsInvoiced
+                })
+                .ToList(),
+                
            InvoiceId = branch.InvoiceId,
            UpdatedAt = branch.UpdatedAt,
            CreatedAt = branch.CreatedAt 

@@ -2,6 +2,7 @@ namespace Domain.Invoices;
 
 using Domain.Enums;
 using Domain.Branches;
+using Domain.Transactions;
 public class Invoice
 {
     public Guid RowGuid { get; set; } = Guid.NewGuid();

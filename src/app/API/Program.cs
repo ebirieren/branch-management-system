@@ -25,11 +25,13 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IStockTransactionRepository, StockTransactionRepository>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IBranchService, BranchService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IBranchStockService, BranchStockService>();
+builder.Services.AddScoped<IStockTransactionService, StockTransactionService>();
 
 
 builder.Services.AddTransient<ICalculationService, CalculationService>();

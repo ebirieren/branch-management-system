@@ -28,10 +28,16 @@ public sealed class BranchStockConfiguration: IEntityTypeConfiguration<BranchSto
                 .IsRequired()
                 .HasColumnName("productCount");
 
+        entity.HasOne(branchStock => branchStock.Branch)
+            .WithMany(branch => branch.BranchStocks)
+            .HasForeignKey(branchStock => branchStock.BranchId);
 
         entity.HasOne(branchStock => branchStock.Product)
-                .WithMany(product => product.BranchStocks)
-                .HasForeignKey(branchStock => branchStock.ProductId);
+            .WithMany()
+            .HasForeignKey(branchStock => branchStock.ProductId);
+
+        entity.Ignore(branchStock => branchStock.InitialProductValue);
+
 
     }
 }

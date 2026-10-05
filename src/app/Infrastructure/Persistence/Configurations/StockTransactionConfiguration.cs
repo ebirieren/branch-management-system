@@ -33,9 +33,6 @@ public sealed class StockTransactionConfiguration: IEntityTypeConfiguration<Stoc
         entity.Property(transaction => transaction.InvoiceId)
             .HasColumnName("invoiceId");
 
-        entity.Property(transaction => transaction.IsInvoiced)
-            .HasColumnName("isInvoiced");
-
         entity.HasOne(stockTransaction => stockTransaction.Product)
             .WithMany()
             .HasForeignKey(stockTransaction => stockTransaction.ProductId);
@@ -46,6 +43,8 @@ public sealed class StockTransactionConfiguration: IEntityTypeConfiguration<Stoc
             .IsRequired(false);
         
         entity.Ignore(transaction => transaction.IsInvoiced);
+    
+        entity.Ignore(transaction => transaction.TotalExpense);
 
     }
 }

@@ -8,6 +8,7 @@ public record BranchProductDTO
     public string ProductName { get; init; } = string.Empty;
     public decimal? ProductPriceWithTax { get; init; }
     public int ProductCount { get; init; }
-
+    public decimal? InitialProductValue { get; init; }
+    public DateTime? LastShipment { get; init; } = DateTime.UtcNow;
     
 }

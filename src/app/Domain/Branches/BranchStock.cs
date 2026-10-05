@@ -12,4 +12,6 @@ public class BranchStock
     public Product Product { get; set; } = null!;
 
     public int ProductCount { get; set; }
+
+    public decimal InitialProductValue => ProductCount * Product.ProductPriceWithTax ?? 0;
 }

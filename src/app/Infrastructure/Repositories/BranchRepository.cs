@@ -17,7 +17,9 @@ public class BranchRepository : IBranchRepository
     {
         return _context.Branches
             .Include(branch => branch.BranchStocks)
-            .ThenInclude(branchStock => branchStock.Product)
+                .ThenInclude(branchStock => branchStock.Product)
+            .Include(branch => branch.StockTransactions)
+                .ThenInclude(transaction => transaction.Product)
             .FirstOrDefaultAsync(branch => branch.Id == id);
     }
 
@@ -25,7 +27,9 @@ public class BranchRepository : IBranchRepository
     {
         return _context.Branches
             .Include(branch => branch.BranchStocks)
-            .ThenInclude(branchStock => branchStock.Product)
+                .ThenInclude(branchStock => branchStock.Product)
+            .Include(branch => branch.StockTransactions)
+                .ThenInclude(transaction => transaction.Product)
             .ToListAsync();
     }
 

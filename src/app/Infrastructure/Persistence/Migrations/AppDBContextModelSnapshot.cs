@@ -22,21 +22,6 @@ namespace Infrastructure.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("BranchProduct", b =>
-                {
-                    b.Property<int>("BranchesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("BranchesId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("BranchProduct");
-                });
-
             modelBuilder.Entity("Domain.Branches.Branch", b =>
                 {
                     b.Property<int>("Id")
@@ -61,9 +46,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<Guid>("InvoiceId")
                         .HasColumnType("uuid")
                         .HasColumnName("invoiceId");
-
-                    b.Property<Guid>("RowGuid")
-                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -181,9 +163,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("numeric(10,2)")
                         .HasColumnName("productPriceWithTax");
 
-                    b.Property<Guid>("RowGuid")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("SupplierName")
                         .IsRequired()
                         .HasColumnType("text")
@@ -208,19 +187,62 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Products", (string)null);
                 });
 
-            modelBuilder.Entity("BranchProduct", b =>
+            modelBuilder.Entity("Domain.Transactions.StockTransaction", b =>
                 {
-                    b.HasOne("Domain.Branches.Branch", null)
-                        .WithMany()
-                        .HasForeignKey("BranchesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
-                    b.HasOne("Domain.Products.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("BranchId")
+                        .HasColumnType("integer")
+                        .HasColumnName("branchId");
+
+                    b.Property<Guid?>("InvoiceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("invoiceId");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer")
+                        .HasColumnName("ProductId");
+
+                    b.Property<string>("ProductNameAtTransaction")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("ProductPriceAtTransaction")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("productQuantity");
+
+                    b.Property<string>("SupplierNameAtTransaction")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int?>("TaxRateAtTransaction")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("TransactionDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("transactionDate");
+
+                    b.Property<decimal>("UnitPriceWithTax")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("StockTransactions", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Branches.BranchStock", b =>
@@ -232,7 +254,7 @@ namespace Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Products.Product", "Product")
-                        .WithMany("BranchStocks")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -244,13 +266,36 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Invoices.Invoice", b =>
                 {
-                    b.HasOne("Domain.Branches.Branch", "BranchInformations")
+                    b.HasOne("Domain.Branches.Branch", "Branch")
                         .WithMany("Invoices")
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("BranchInformations");
+                    b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("Domain.Transactions.StockTransaction", b =>
+                {
+                    b.HasOne("Domain.Branches.Branch", null)
+                        .WithMany("StockTransactions")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Invoices.Invoice", "Invoice")
+                        .WithMany("Transactions")
+                        .HasForeignKey("InvoiceId");
+
+                    b.HasOne("Domain.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Branches.Branch", b =>
@@ -258,11 +303,13 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("BranchStocks");
 
                     b.Navigation("Invoices");
+
+                    b.Navigation("StockTransactions");
                 });
 
-            modelBuilder.Entity("Domain.Products.Product", b =>
+            modelBuilder.Entity("Domain.Invoices.Invoice", b =>
                 {
-                    b.Navigation("BranchStocks");
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

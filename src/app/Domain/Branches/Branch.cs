@@ -1,5 +1,6 @@
 using Domain.Invoices;
 using Domain.Products;
+using Domain.Transactions;
 
 namespace Domain.Branches;
 
