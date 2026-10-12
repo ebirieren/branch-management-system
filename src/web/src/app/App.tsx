@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
-import { createBranch, getBranches } from './api/branches'
-import { BranchCard } from './components/BranchCard'
-import { StatCard } from './components/StatCard'
-import type { Branch } from './types/branch'
+import { createBranch, getBranches } from '../features/branches/api/branches'
+import { BranchCard } from '../features/branches/components/BranchCard'
+import { StatCard } from '../components/StatCard'
+import type { Branch } from '../types/branch'
 import './App.css'
 
 type IconName =

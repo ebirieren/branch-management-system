@@ -1,4 +1,4 @@
-import type { Branch } from '../types/branch'
+import type { Branch } from '../../../types/branch'
 
 const BRANCHES_URL = '/api/branches'
 
