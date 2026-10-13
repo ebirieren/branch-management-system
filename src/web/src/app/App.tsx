@@ -1,45 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import type { FormEvent, ReactNode } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import type { FormEvent } from 'react'
 import { createBranch, getBranches } from '../features/branches/api/branches'
 import { BranchCard } from '../features/branches/components/BranchCard'
-import { StatCard } from '../components/StatCard'
+import { StatCard } from '../components/ui/StatCard'
 import type { Branch } from '../types/branch'
+import { Icon } from '../components/ui/Icon'
+import { Sidebar } from '../components/navigation/Sidebar'
+import { Topbar } from '../components/navigation/Topbar'
+import { DashboardLayout } from '../layouts/DashboardLayout'
 import './App.css'
 
-type IconName =
-  | 'grid'
-  | 'branch'
-  | 'box'
-  | 'receipt'
-  | 'search'
-  | 'plus'
-  | 'refresh'
-  | 'warehouse'
-  | 'layers'
-  | 'value'
-  | 'close'
-
-function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
-  const paths: Record<IconName, ReactNode> = {
-    grid: <><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></>,
-    branch: <><circle cx="6" cy="5" r="2"/><circle cx="18" cy="5" r="2"/><circle cx="12" cy="19" r="2"/><path d="M6 7v3c0 2 1.5 3 3 3h6c1.5 0 3-1 3-3V7M12 13v4"/></>,
-    box: <><path d="m4 7 8-4 8 4-8 4-8-4Z"/><path d="m4 7 8 4 8-4v10l-8 4-8-4V7Z"/><path d="M12 11v10"/></>,
-    receipt: <><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></>,
-    search: <><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></>,
-    plus: <path d="M12 5v14M5 12h14"/>,
-    refresh: <><path d="M20 11a8 8 0 0 0-14-5l-2 2"/><path d="M4 4v4h4M4 13a8 8 0 0 0 14 5l2-2"/><path d="M20 20v-4h-4"/></>,
-    warehouse: <><path d="M3 9 12 3l9 6v12H3V9Z"/><path d="M7 21v-8h10v8M9 16h6"/></>,
-    layers: <><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></>,
-    value: <><circle cx="12" cy="12" r="9"/><path d="M16 8.5c-.8-.7-2-1-3.2-1-1.6 0-2.8.8-2.8 2s1 1.8 3 2.3c2 .5 3 1.1 3 2.5s-1.3 2.2-3 2.2c-1.4 0-2.8-.5-3.7-1.3M12.7 5.5v2M12.7 16.5v2"/></>,
-    close: <path d="m6 6 12 12M18 6 6 18"/>,
-  }
-
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      {paths[name]}
-    </svg>
-  )
-}
 
 function App() {
   const [branches, setBranches] = useState<Branch[]>([])
@@ -49,7 +19,7 @@ function App() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [branchName, setBranchName] = useState('')
   const [isSaving, setIsSaving] = useState(false)
-  const searchInputRef = useRef<HTMLInputElement>(null)
+
 
   async function loadBranches() {
     try {
@@ -84,17 +54,6 @@ function App() {
     }
   }, [])
 
-  useEffect(() => {
-    function focusSearch(event: KeyboardEvent) {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-        event.preventDefault()
-        searchInputRef.current?.focus()
-      }
-    }
-
-    window.addEventListener('keydown', focusSearch)
-    return () => window.removeEventListener('keydown', focusSearch)
-  }, [])
 
   const filteredBranches = useMemo(() => {
     const term = search.trim().toLowerCase()
@@ -133,48 +92,7 @@ function App() {
   }
 
   return (
-    <div className="app-shell">
-      <aside className="sidebar">
-        <a className="brand" href="#top" aria-label="Stockroom home">
-          <span className="brand-mark"><Icon name="warehouse" size={22} /></span>
-          <span>Stockroom</span>
-        </a>
-
-        <nav className="main-nav" aria-label="Main navigation">
-          <p className="nav-label">Workspace</p>
-          <a className="nav-item active" href="#dashboard"><Icon name="grid" /> Dashboard</a>
-          <a className="nav-item" href="#branches"><Icon name="branch" /> Branches <span className="nav-count">{branches.length}</span></a>
-          <span className="nav-item muted"><Icon name="box" /> Products <span className="soon">Soon</span></span>
-          <span className="nav-item muted"><Icon name="receipt" /> Invoices <span className="soon">Soon</span></span>
-        </nav>
-
-        <div className="learning-card">
-          <span className="learning-icon">TS</span>
-          <div>
-            <strong>Learning mode</strong>
-            <p>This page is built with typed React components.</p>
-          </div>
-        </div>
-      </aside>
-
-      <main className="main-content" id="top">
-        <header className="topbar">
-          <div className="top-search">
-            <Icon name="search" size={18} />
-            <input
-              ref={searchInputRef}
-              aria-label="Search branches"
-              placeholder="Search branches..."
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-            />
-            <kbd>⌘ K</kbd>
-          </div>
-          <div className="profile" aria-label="Signed in user">
-            <span className="avatar">ED</span>
-            <span><strong>Developer</strong><small>Learning workspace</small></span>
-          </div>
-        </header>
+    <DashboardLayout branchCount={branches.length} search={search} onSearchChange={setSearch}>
 
         <div className="page" id="dashboard">
           <section className="page-heading">
@@ -233,7 +151,6 @@ function App() {
             )}
           </section>
         </div>
-      </main>
 
       {isDialogOpen && (
         <div className="dialog-backdrop" role="presentation" onMouseDown={() => setIsDialogOpen(false)}>
@@ -254,7 +171,7 @@ function App() {
           </section>
         </div>
       )}
-    </div>
+    </DashboardLayout>
   )
 }
 
