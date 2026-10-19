@@ -2,9 +2,10 @@ import { Icon } from '../ui/Icon'
 
 type SidebarProps = {
     branchCount: number
+    productCount: number
 }
 
-export function Sidebar({ branchCount }: SidebarProps) {
+export function Sidebar({ branchCount, productCount }: SidebarProps) {
     return (
         <aside className="sidebar">
             <a className="brand" href="#top" aria-label="Stockroom home">
@@ -16,7 +17,7 @@ export function Sidebar({ branchCount }: SidebarProps) {
                 <p className="nav-label">Workspace</p>
                 <a className="nav-item active" href="#dashboard"><Icon name="grid" /> Dashboard</a>
                 <a className="nav-item" href="#branches"><Icon name="branch" /> Branches <span className="nav-count">{branchCount}</span></a>
-                <span className="nav-item muted"><Icon name="box" /> Products <span className="soon">Soon</span></span>
+                <a className='nav-item' href="#products"><Icon name="box"/> Products <span className='nav-count'>{productCount}</span></a>
                 <span className="nav-item muted"><Icon name="receipt" /> Invoices <span className="soon">Soon</span></span>
             </nav>
 
