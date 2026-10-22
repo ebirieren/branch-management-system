@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Branches;
 using Domain.Invoices;
 using Domain.Products;
+using Domain.User;
 using Domain.Transactions;
 using Infrastructure;
 
@@ -23,6 +24,8 @@ public class AppDBContext: DbContext
     public DbSet<BranchStock> BranchStock => Set<BranchStock>();
 
     public DbSet<StockTransaction> StockTransactions => Set<StockTransaction>();
+
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

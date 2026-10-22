@@ -4,6 +4,7 @@ using Application.Interfaces.Services;
 using Application.Services;
 using Infrastructure;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,13 +27,14 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IBranchRepository, BranchRepository>();
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 builder.Services.AddScoped<IStockTransactionRepository, StockTransactionRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IBranchService, BranchService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IBranchStockService, BranchStockService>();
 builder.Services.AddScoped<IStockTransactionService, StockTransactionService>();
-
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddTransient<ICalculationService, CalculationService>();
 
