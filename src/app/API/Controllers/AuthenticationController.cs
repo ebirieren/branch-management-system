@@ -9,15 +9,23 @@ namespace API.Controllers;
 [Route("api/auth")]
 public class AuthenticationController : ControllerBase
 {
-    public AuthenticationController()
+    private readonly IAuthenticationService _authenticationService;
+
+    public AuthenticationController(IAuthenticationService authenticationService)
     {
-        
+     _authenticationService = authenticationService;   
     }
 
     [HttpPost]
-    public async Task<ActionResult<LoginDTO>> CheckUserAccount(LoginRequest request)
+    public async Task<ActionResult<LoginDTO?>> CheckUserAccount(LoginRequest request)
     {
-        LoginDTO token = await 
-        return Ok()
+        LoginDTO? result = await _authenticationService.CheckUserAccount(request);
+
+        if (result is null)
+        {
+            return Unauthorized("Invalid email or password.");
+        }
+
+        return Ok(result);
     }
 }
