@@ -2,7 +2,7 @@ using Domain.User;
 
 namespace Application.Interfaces;
 
-public interface IUserRepository
+public interface IUserRepository : IRepository<User, Guid>
 {
     Task<User?> GetByEmailAsync(string email);
 }

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { Branch } from '../../types/branch'
+import type { Branch } from '../../features/branches/types/branch'
 import { Icon } from '../ui/Icon'
 import { StatCard } from '../ui/StatCard'
 

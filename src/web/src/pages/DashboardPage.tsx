@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import { DashboardStats } from '../components/dashboard/DashboardStats'
-import { Icon } from '../components/ui/Icon'
 import { useBranches } from '../features/branches/hooks/useBranches'
 import { useProducts } from '../features/products/hooks/useProducts'
 import { DashboardLayout } from '../layouts/DashboardLayout'
@@ -38,9 +37,6 @@ export function DashboardPage(){
                     <h1>Good morning, Developer.</h1>
                     <p>Here is what is happening across your branches today.</p>
                     </div>
-                    <button className="primary-button" type="button" onClick={() => setIsBranchDialogOpen(true)}>
-                    <Icon name="plus" size={18} /> Add branch
-                    </button>
                 </section>
 
                 <DashboardStats branches={branches} />

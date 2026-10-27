@@ -1,4 +1,4 @@
-import type { Branch } from '../../../types/branch'
+import type { Branch } from '../types/branch'
 import { Icon } from '../../../components/ui/Icon'
 import { BranchCard } from './BranchCard'
 
@@ -12,16 +12,22 @@ type BranchSectionProps = {
 }
 
 export function BranchSection({branches, isLoading, error, search, onRefresh, onAddBranch,}: BranchSectionProps){
-    return (
+  return (
           <section className="branch-section" id="branches">
             <div className="section-heading">
               <div>
                 <h2>Your branches</h2>
                 <p>Live data from <code>GET /api/branches</code></p>
               </div>
-              <button className="icon-button" type="button" onClick={() => void onRefresh()} disabled={isLoading} aria-label="Refresh branches">
-                <Icon name="refresh" size={18} /> Refresh
-              </button>
+              <div className='section-actions'>
+                <button className="primary-button" type="button" onClick={onAddBranch}>
+                      <Icon name="plus" size={13} /> Add branch
+                </button>
+                <button className="icon-button" type="button" onClick={() => void onRefresh()} disabled={isLoading} aria-label="Refresh branches">
+                  <Icon name="refresh" size={18} /> Refresh
+                </button>
+              </div>
+
             </div>
 
             {error && (

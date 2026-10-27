@@ -1,4 +1,4 @@
-import type { Product } from '../../../types/product'
+import type { Product } from '../types/product'
 import { Icon } from '../../../components/ui/Icon'
 import { ProductCard } from '../components/ProductCard'
 
@@ -19,9 +19,15 @@ export function ProductSection({products, isLoading, error, search, onRefresh, o
                 <div>
                     <h2>Products</h2>
                 </div>
-                <button className='icon-button' type="button" onClick={() => void onRefresh()} disabled={isLoading} aria-label="Refresh products">
-                    <Icon name="refresh" size={18} /> Refresh
-                </button>
+                <div className='section-actions'>
+                    <button className='primary-button' type="button" onClick={onAddProduct}>
+                        <Icon name='plus' size={13} /> Add product
+                    </button>
+                    <button className='icon-button' type="button" onClick={() => void onRefresh()} disabled={isLoading} aria-label="Refresh products">
+                        <Icon name="refresh" size={18} /> Refresh
+                    </button>
+                </div>
+
             </div>
 
             {error && (

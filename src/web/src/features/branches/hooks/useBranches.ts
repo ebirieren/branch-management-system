@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { createBranch as createBranchRequest, getBranches } from '../api/branches'
-import type { Branch } from '../../../types/branch'
+import type { Branch } from '../types/branch'
 
 export function useBranches(){
   const [branches, setBranches] = useState<Branch[]>([])

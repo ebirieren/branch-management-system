@@ -77,8 +77,12 @@ export function CreateProductDialog({onClose, onCreate}: CreateProductDialogProp
 
                     <label htmlFor="tax-rate">Tax rate</label>
                     <input id="tax-rate" type="number" min="0" max="100" step="1"autoFocus value={taxRate} onChange={(event) => setTaxRate(event.target.value)} />
+                    <div className="dialog-actions">
+                        <button className="secondary-button" type="button" onClick={onClose}>Cancel</button>
+                        <button className="primary-button" type="submit" disabled={isSaving || !productName.trim()}> {isSaving ? "Creating..." : "Create product"}</button>
+                    </div>
                 </form>
-                <p></p>
+
             </section>
         </div>
     )

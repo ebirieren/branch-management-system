@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import type { Branch } from '../../../types/branch'
+import type { Branch } from '../types/branch'
 
 type BranchCardProps = {
   branch: Branch

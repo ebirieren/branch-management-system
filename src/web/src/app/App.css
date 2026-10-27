@@ -36,7 +36,7 @@ button { cursor: pointer; }
 .page-heading h1 { margin: 0; color: #172033; font-size: clamp(28px, 3vw, 39px); font-weight: 680; letter-spacing: -1.4px; }
 .page-heading > div > p:last-child { margin: 10px 0 0; color: #7f8998; font-size: 13px; }
 .primary-button, .secondary-button, .icon-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 8px; font-size: 12px; font-weight: 700; transition: .18s ease; }
-.primary-button { min-height: 41px; padding: 0 17px; border: 1px solid #2478f0; background: #2478f0; color: white; box-shadow: 0 5px 14px rgba(36,120,240,.2); }
+.primary-button { min-height: 36px; padding: 0 17px; border: 1px solid #2478f0; background: #2478f0; color: white; box-shadow: 0 5px 14px rgba(36,120,240,.2); }
 .primary-button:hover { border-color: #1269e1; background: #1269e1; transform: translateY(-1px); }
 .primary-button:disabled { cursor: not-allowed; opacity: .55; transform: none; }
 .secondary-button { min-height: 41px; padding: 0 17px; border: 1px solid #dfe3e9; background: white; color: #596578; }
@@ -46,7 +46,6 @@ button { cursor: pointer; }
 .icon-button:disabled { cursor: wait; opacity: .5; }
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 35px; }
 .stat-card { position: relative; min-height: 142px; padding: 20px; overflow: hidden; border: 1px solid #e4e7eb; border-radius: 13px; background: white; box-shadow: 0 2px 5px rgba(22,35,58,.025); }
-.stat-card::after { content: ''; position: absolute; width: 92px; height: 92px; top: -44px; right: -38px; border-radius: 50%; background: var(--tone-soft); }
 .stat-top { display: flex; align-items: center; justify-content: space-between; }
 .stat-label { color: #788395; font-size: 11px; font-weight: 650; }
 .stat-icon { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 9px; background: var(--tone-soft); color: var(--tone); }
@@ -58,6 +57,7 @@ button { cursor: pointer; }
 .tone-green { --tone: #1b9c69; --tone-soft: #e6f7f0; }
 .branch-section { margin-top: 42px; }
 .section-heading { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 17px; }
+.section-actions {display:flex; align-items: center; gap: 8px;}
 .section-heading h2 { margin: 0; color: #1a2437; font-size: 18px; letter-spacing: -.3px; }
 .section-heading p { margin: 5px 0 0; color: #99a2af; font-size: 10px; }
 .section-heading code { padding: 2px 5px; border-radius: 4px; background: #e9eef5; color: #68768a; font-size: 9px; }

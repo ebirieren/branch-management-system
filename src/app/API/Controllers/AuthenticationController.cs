@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Application.DTOs;
 using Application.Interfaces.Services;
 using Application.Requests;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
@@ -15,7 +16,8 @@ public class AuthenticationController : ControllerBase
     {
      _authenticationService = authenticationService;   
     }
-
+    
+    [AllowAnonymous]
     [HttpPost]
     public async Task<ActionResult<LoginDTO?>> CheckUserAccount(LoginRequest request)
     {

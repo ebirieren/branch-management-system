@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react"
-import type { Product } from "../../../types/product"
+import type { Product } from "../types/product"
 
 type ProductCardProps = {
     product: Product
